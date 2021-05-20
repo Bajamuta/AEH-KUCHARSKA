@@ -19,7 +19,7 @@ namespace KsiazkaKucharskaConsole
             //dataAccess.AddListaKrokow(1, 1, 1);
             //dataAccess.AddListaSkladnikow(1,1,1);
             //dataAccess.AddListaPrzepisow(1,1);
-            dataAccess.AddKsiega(1,"ksiega1");
+            //dataAccess.AddKsiega(1,"ksiega1");
         }
     }
 }

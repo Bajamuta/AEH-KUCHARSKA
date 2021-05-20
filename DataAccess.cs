@@ -11,20 +11,20 @@ namespace KsiazkaKucharskaConsole
     {
         private SqlConnection connection = new SqlConnection(Helper.CnnVal("KUCHARSKA_DB"));
         
-        public List<Ksiega> GetKsiegi()
+        public List<Book> GetBooks()
         {
-            List<Ksiega> ksiegi = new List<Ksiega>();
+            List<Book> books = new List<Book>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM KSIEGA", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM BOOK", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        ksiegi.Add(new Ksiega(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2)));
+                        books.Add(new Book(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2)));
                     }
                     connection.Close();
                 }
@@ -35,12 +35,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return ksiegi;
+            return books;
         }
 
-        public void AddKsiega(int id_lista_przepisow, string nazwa)
+        public void AddKsiega(int id_recipes_list, string name)
         {
-            string cmdtext = "INSERT INTO KSIEGA VALUES (\'" +  id_lista_przepisow + "', '" + nazwa + "')";
+            string cmdtext = "INSERT INTO BOOK VALUES (\'" +  id_recipes_list + "', '" + name + "')";
             try
             {
                 using (connection)
@@ -63,21 +63,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
 
-        public List<Przepis> GetPrzepis()
+        public List<Recipe> GetRecipe(string name = "", int id_author = -1)
         {
-            List<Przepis> przepisy = new List<Przepis>();
+            List<Recipe> przepisy = new List<Recipe>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM PRZEPIS", connection);
+                    SqlCommand cmd = new SqlCommand("Select [ID], [NAME], [PHOTO], [ID_AUTHOR] FROM RECIPE WHERE [NAME] = @name", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
                         przepisy.Add(
-                            new Przepis(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3)));
+                            new Recipe(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3)));
                     }
                     connection.Close();
                 }
@@ -91,9 +91,9 @@ namespace KsiazkaKucharskaConsole
             return przepisy;
         }
 
-        public void AddPrzepis(string nazwa, string zdjecie, int id_autor)
+        public void AddRecipe(string name, string photo, int id_author)
         {
-            string cmdtext = "INSERT INTO PRZEPIS VALUES (\'" + nazwa + "', '" + zdjecie + "', '" + id_autor + "')";
+            string cmdtext = "INSERT INTO RECIPE VALUES (\'" + name + "', '" + photo + "', '" + id_author + "')";
             try
             {
                 using (connection)
@@ -116,21 +116,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
 
-        public List<Skladnik> GetSkladnik()
+        public List<Ingridient> GetIngridient()
         {
-            List<Skladnik> skladniki = new List<Skladnik>();
+            List<Ingridient> ingridients = new List<Ingridient>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM SKLADNIK", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM INGRIDIENT", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        skladniki.Add(
-                            new Skladnik(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2)));
+                        ingridients.Add(
+                            new Ingridient(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2)));
                     }
                     connection.Close();
                 }
@@ -141,12 +141,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return skladniki;
+            return ingridients;
         }
 
-        public void AddSkladnik(string nazwa, string jednostka)
+        public void AddIngridient(string name, string junit)
         {
-            string cmdtext = "INSERT INTO SKLADNIK VALUES (\'" + nazwa + "', '" + jednostka + "')";
+            string cmdtext = "INSERT INTO INGRIDIENT VALUES (\'" + name + "', '" + junit + "')";
             try
             {
                 using (connection)
@@ -169,21 +169,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
 
-        public List<Uzytkownik> GetUzytkownicy()
+        public List<Author> GetAuthors()
         {
-            List<Uzytkownik> uzytkownicy = new List<Uzytkownik>();
+            List<Author> authors = new List<Author>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM UZYTKOWNIK", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM AUTHOR", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        uzytkownicy.Add(
-                            new Uzytkownik(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5)));
+                        authors.Add(
+                            new Author(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5)));
                     }
                     connection.Close();
                 }
@@ -194,12 +194,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return uzytkownicy;
+            return authors;
         }
 
-        public void AddUzytkownik(string typ, string nazwa, string login, string password, string opis)
+        public void AddAuthor(string type, string name, string login, string password, string description)
         {
-            string cmdtext = "INSERT INTO UZYTKOWNIK VALUES (\'" + typ + "', '" + nazwa + "', '" + login + "', '" + password + "', '" + opis + "')";
+            string cmdtext = "INSERT INTO AUTHOR VALUES (\'" + type + "', '" + name + "', '" + login + "', '" + password + "', '" + description + "')";
             try
             {
                 using (connection)
@@ -222,21 +222,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<Kategoria> GetKategorie()
+        public List<Category> GetKategorie()
         {
-            List<Kategoria> kategorie = new List<Kategoria>();
+            List<Category> categories = new List<Category>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM KATEGORIA", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM CATEGORY", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        kategorie.Add(
-                            new Kategoria(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2)));
+                        categories.Add(
+                            new Category(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2)));
                     }
                     connection.Close();
                 }
@@ -247,12 +247,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return kategorie;
+            return categories;
         }
 
-        public void AddKategoria(string nazwa, string opis)
+        public void AddCategory(string name, string description)
         {
-            string cmdtext = "INSERT INTO KATEGORIA VALUES (\'" + nazwa + "', '" + opis + "')";
+            string cmdtext = "INSERT INTO CATEGORY VALUES (\'" + name + "', '" + description + "')";
             try
             {
                 using (connection)
@@ -275,21 +275,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<Krok> GetKroki()
+        public List<Step> GetSteps()
         {
-            List<Krok> kroki = new List<Krok>();
+            List<Step> steps = new List<Step>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM KROK", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM STEP", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        kroki.Add(
-                            new Krok(rdr.GetInt32(0), rdr.GetString(1)));
+                        steps.Add(
+                            new Step(rdr.GetInt32(0), rdr.GetString(1)));
                     }
                     connection.Close();
                 }
@@ -300,12 +300,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return kroki;
+            return steps;
         }
 
-        public void AddKrok(string opis)
+        public void AddStep(string description)
         {
-            string cmdtext = "INSERT INTO KROK VALUES (\'" + opis + "')";
+            string cmdtext = "INSERT INTO STEP VALUES (\'" + description + "')";
             try
             {
                 using (connection)
@@ -328,21 +328,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<ListaKrokow> GetListaKrokow()
+        public List<StepsList> GetStepsLists()
         {
-            List<ListaKrokow> lista_krokow = new List<ListaKrokow>();
+            List<StepsList> stepsLists = new List<StepsList>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_KROKOW", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM STEPS_LIST", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        lista_krokow.Add(
-                            new ListaKrokow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
+                        stepsLists.Add(
+                            new StepsList(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
                     }
                     connection.Close();
                 }
@@ -353,12 +353,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return lista_krokow;
+            return stepsLists;
         }
         
-        public void AddListaKrokow(int id_krok, int numer_kroku, int id_przepis)
+        public void AddStepsList(int id_step, int step_number, int id_recipe)
         {
-            string cmdtext = "INSERT INTO LISTA_KROKOW VALUES (\'" + id_krok + "', '" + numer_kroku + "', '" + id_przepis + "')";
+            string cmdtext = "INSERT INTO STEPS_LIST VALUES (\'" + id_step + "', '" + step_number + "', '" + id_recipe + "')";
             try
             {
                 using (connection)
@@ -381,21 +381,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<ListaSkladnikow> GetListaSkladnikow()
+        public List<IngridientsList> GetIngridientsLists()
         {
-            List<ListaSkladnikow> lista_skladnikow = new List<ListaSkladnikow>();
+            List<IngridientsList> ingridients = new List<IngridientsList>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_SKLADNIKOW", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM INGRIDIENTS_LIST", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        lista_skladnikow.Add(
-                            new ListaSkladnikow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
+                        ingridients.Add(
+                            new IngridientsList(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
                     }
                     connection.Close();
                 }
@@ -406,12 +406,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return lista_skladnikow;
+            return ingridients;
         }
         
-        public void AddListaSkladnikow(int id_skladnik, int id_przepis, int ilosc)
+        public void AddIngridientsList(int id_ingridient, int id_recipe, int countity)
         {
-            string cmdtext = "INSERT INTO LISTA_SKLADNIKOW VALUES (\'" + id_skladnik + "', '" + id_przepis + "', '" + ilosc + "')";
+            string cmdtext = "INSERT INTO INGRIDIENTS_LIST VALUES (\'" + id_ingridient + "', '" + id_recipe + "', '" + countity + "')";
             try
             {
                 using (connection)
@@ -434,21 +434,21 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<ListaPrzepisow> GetListaPrzepisow()
+        public List<RecipesList> GetRecipesLists()
         {
-            List<ListaPrzepisow> lista_przepisow = new List<ListaPrzepisow>();
+            List<RecipesList> recipes = new List<RecipesList>();
             try
             {
                 using (connection)
                 {
-                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_PRZEPISOW", connection);
+                    SqlCommand cmd = new SqlCommand("Select * FROM RECIPES_LIST", connection);
                     cmd.CommandType = CommandType.Text;
                     connection.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        lista_przepisow.Add(
-                            new ListaPrzepisow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
+                        recipes.Add(
+                            new RecipesList(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
                     }
                     connection.Close();
                 }
@@ -459,12 +459,12 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
 
-            return lista_przepisow;
+            return recipes;
         }
         
-        public void AddListaPrzepisow(int id_przepis, int id_kategoria)
+        public void AddRecipesList(int id_recipe, int id_category)
         {
-            string cmdtext = "INSERT INTO LISTA_PRZEPISOW VALUES (\'" + id_przepis + "', '" + id_kategoria + "')";
+            string cmdtext = "INSERT INTO RECIPES_LIST VALUES (\'" + id_recipe + "', '" + id_category + "')";
             try
             {
                 using (connection)
