@@ -57,7 +57,7 @@ namespace KsiazkaKucharskaConsole
                     while (rdr.Read())
                     {
                         przepisy.Add(
-                            new Przepis(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3), rdr.GetInt32(4)));
+                            new Przepis(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetInt32(3)));
                     }
                     connection.Close();
                 }
@@ -71,7 +71,7 @@ namespace KsiazkaKucharskaConsole
             return przepisy;
         }
 
-        public void AddPrzepis(int id_ksiega, string nazwa, int id_autor, int id_kategoria, string zdjecie, int id_lista_krokow)
+        public void AddPrzepis(string nazwa, string zdjecie, int id_autor, int id_lista_krokow)
         {
             
         }
@@ -278,6 +278,59 @@ namespace KsiazkaKucharskaConsole
                     if (i == -1)
                     {
                         Console.WriteLine("Błąd krok?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        public List<ListaKrokow> GetListaKrokow()
+        {
+            List<ListaKrokow> lista_krokow = new List<ListaKrokow>();
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_KROKOW", connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        lista_krokow.Add(
+                            new ListaKrokow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return lista_krokow;
+        }
+        
+        public void AddListaKrokow(int id_krok, int numer_kroku)
+        {
+            string cmdtext = "INSERT INTO KROK VALUES (\'" + id_krok + "', '" + numer_kroku + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd tworzenie listy krokow?");
                     }
                 }
             }
