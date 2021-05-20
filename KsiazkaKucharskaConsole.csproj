@@ -87,6 +87,7 @@
         <Compile Include="Krok.cs" />
         <Compile Include="Ksiega.cs" />
         <Compile Include="ListaKrokow.cs" />
+        <Compile Include="ListaSkladnikow.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Przepis.cs" />

@@ -360,6 +360,59 @@ namespace KsiazkaKucharskaConsole
                 throw;
             }
         }
+        
+        public List<ListaSkladnikow> GetListaSkladnikow()
+        {
+            List<ListaSkladnikow> lista_skladnikow = new List<ListaSkladnikow>();
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_SKLADNIKOW", connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        lista_skladnikow.Add(
+                            new ListaSkladnikow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return lista_skladnikow;
+        }
+        
+        public void AddListaSkladnikow(int id_skladnik, int id_przepis, int ilosc)
+        {
+            string cmdtext = "INSERT INTO LISTA_SKLADNIKOW VALUES (\'" + id_skladnik + "', '" + id_przepis + "', '" + ilosc + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd tworzenie listy krokow?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
         /*public string test()
         {
