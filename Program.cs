@@ -17,7 +17,9 @@ namespace KsiazkaKucharskaConsole
             //dataAccess.AddSkladnik("koperek", "pęczek");
             //dataAccess.AddPrzepis("spaghetti bolognese", "https://herrbuettner.de/wp-content/uploads/2018/12/spaghetti_chorizo_bolognese_big.jpg", 1);
             //dataAccess.AddListaKrokow(1, 1, 1);
-            dataAccess.AddListaSkladnikow(1,1,1);
+            //dataAccess.AddListaSkladnikow(1,1,1);
+            //dataAccess.AddListaPrzepisow(1,1);
+            dataAccess.AddKsiega(1,"ksiega1");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace KsiazkaKucharskaConsole
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        ksiegi.Add(new Ksiega(rdr.GetInt32(0), rdr.GetInt32(1)));
+                        ksiegi.Add(new Ksiega(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2)));
                     }
                     connection.Close();
                 }
@@ -38,9 +38,29 @@ namespace KsiazkaKucharskaConsole
             return ksiegi;
         }
 
-        public void AddKsiega(string nazwa, List<Przepis> przepisy)
+        public void AddKsiega(int id_lista_przepisow, string nazwa)
         {
-            
+            string cmdtext = "INSERT INTO KSIEGA VALUES (\'" +  id_lista_przepisow + "', '" + nazwa + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd dodawanie ksiega?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public List<Przepis> GetPrzepis()
@@ -404,6 +424,59 @@ namespace KsiazkaKucharskaConsole
                     if (i == -1)
                     {
                         Console.WriteLine("Błąd tworzenie listy krokow?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        public List<ListaPrzepisow> GetListaPrzepisow()
+        {
+            List<ListaPrzepisow> lista_przepisow = new List<ListaPrzepisow>();
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand("Select * FROM LISTA_PRZEPISOW", connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        lista_przepisow.Add(
+                            new ListaPrzepisow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return lista_przepisow;
+        }
+        
+        public void AddListaPrzepisow(int id_przepis, int id_kategoria)
+        {
+            string cmdtext = "INSERT INTO LISTA_PRZEPISOW VALUES (\'" + id_przepis + "', '" + id_kategoria + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd tworzenie listy przepisow?");
                     }
                 }
             }
