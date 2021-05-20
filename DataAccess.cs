@@ -90,7 +90,7 @@ namespace KsiazkaKucharskaConsole
                     while (rdr.Read())
                     {
                         skladniki.Add(
-                            new Skladnik(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3)));
+                            new Skladnik(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2)));
                     }
                     connection.Close();
                 }
@@ -104,9 +104,29 @@ namespace KsiazkaKucharskaConsole
             return skladniki;
         }
 
-        public void AddSkladnik()
+        public void AddSkladnik(string nazwa, string jednostka)
         {
-            
+            string cmdtext = "INSERT INTO SKLADNIK VALUES (\'" + nazwa + "', '" + jednostka + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd dodawanie skladnik?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public List<Uzytkownik> GetUzytkownicy()
