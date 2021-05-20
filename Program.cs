@@ -7,10 +7,11 @@ namespace KsiazkaKucharskaConsole
         public static void Main(string[] args)
         {
             DataAccess dataAccess = new DataAccess();
-            foreach (var ksiega in dataAccess.GetKsiegi()) 
+            /*foreach (var ksiega in dataAccess.GetKsiegi()) 
             {
                 Console.WriteLine("ksiega nr " + ksiega.id_ksiega + ", index listy przepisow: " + ksiega.id_przepisy);
-            }
+            }*/
+            dataAccess.AddKrok("lorem adsd asd ew r");
         }
     }
 }

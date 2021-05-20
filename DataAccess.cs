@@ -205,7 +205,27 @@ namespace KsiazkaKucharskaConsole
 
         public void AddKrok(string opis)
         {
-            
+            string cmdtext = "INSERT INTO KROK VALUES (\'" + opis + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("here");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         /*public string test()
