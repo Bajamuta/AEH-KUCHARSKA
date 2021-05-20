@@ -71,9 +71,29 @@ namespace KsiazkaKucharskaConsole
             return przepisy;
         }
 
-        public void AddPrzepis(string nazwa, string zdjecie, int id_autor, int id_lista_krokow)
+        public void AddPrzepis(string nazwa, string zdjecie, int id_autor)
         {
-            
+            string cmdtext = "INSERT INTO PRZEPIS VALUES (\'" + nazwa + "', '" + zdjecie + "', '" + id_autor + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd dodawanie przepis?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public List<Skladnik> GetSkladnik()
@@ -302,7 +322,7 @@ namespace KsiazkaKucharskaConsole
                     while (rdr.Read())
                     {
                         lista_krokow.Add(
-                            new ListaKrokow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
+                            new ListaKrokow(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
                     }
                     connection.Close();
                 }
@@ -316,9 +336,9 @@ namespace KsiazkaKucharskaConsole
             return lista_krokow;
         }
         
-        public void AddListaKrokow(int id_krok, int numer_kroku)
+        public void AddListaKrokow(int id_krok, int numer_kroku, int id_przepis)
         {
-            string cmdtext = "INSERT INTO KROK VALUES (\'" + id_krok + "', '" + numer_kroku + "')";
+            string cmdtext = "INSERT INTO LISTA_KROKOW VALUES (\'" + id_krok + "', '" + numer_kroku + "', '" + id_przepis + "')";
             try
             {
                 using (connection)
