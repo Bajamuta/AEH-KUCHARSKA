@@ -172,7 +172,27 @@ namespace KsiazkaKucharskaConsole
 
         public void AddKategoria(string nazwa, string opis)
         {
-            
+            string cmdtext = "INSERT INTO KATEGORIA VALUES (\'" + nazwa + "', '" + opis + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd dodawanie kategoria?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         
         public List<Krok> GetKroki()
@@ -217,7 +237,7 @@ namespace KsiazkaKucharskaConsole
                     connection.Close();
                     if (i == -1)
                     {
-                        Console.WriteLine("here");
+                        Console.WriteLine("Błąd krok?");
                     }
                 }
             }

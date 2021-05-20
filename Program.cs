@@ -11,7 +11,8 @@ namespace KsiazkaKucharskaConsole
             {
                 Console.WriteLine("ksiega nr " + ksiega.id_ksiega + ", index listy przepisow: " + ksiega.id_przepisy);
             }*/
-            dataAccess.AddKrok("lorem adsd asd ew r");
+            //dataAccess.AddKrok("lorem adsd asd ew r");
+            dataAccess.AddKategoria("kuchnia włoska", "dania kuchni włoskiej");
         }
     }
 }
