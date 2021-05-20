@@ -137,9 +137,29 @@ namespace KsiazkaKucharskaConsole
             return uzytkownicy;
         }
 
-        public void AddUzytkownik()
+        public void AddUzytkownik(string typ, string nazwa, string login, string password, string opis)
         {
-            
+            string cmdtext = "INSERT INTO UZYTKOWNIK VALUES (\'" + typ + "', '" + nazwa + "', '" + login + "', '" + password + "', '" + opis + "')";
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand cmd = new SqlCommand(cmdtext, connection);
+                    cmd.CommandType = CommandType.Text;
+                    connection.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    connection.Close();
+                    if (i == -1)
+                    {
+                        Console.WriteLine("Błąd dodawanie uzytkownik?");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         
         public List<Kategoria> GetKategorie()
