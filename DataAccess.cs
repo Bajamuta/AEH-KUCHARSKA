@@ -10,7 +10,7 @@ namespace KsiazkaKucharskaConsole
     public class DataAccess
     {
       
-        public List<Book> GetBooks(string name = "", int id_recipes = -1)
+        public List<Book> GetBooks(string name = "")
         {
             List<Book> books = new List<Book>();
             try
@@ -24,33 +24,20 @@ namespace KsiazkaKucharskaConsole
                         {
                             cmd.CommandType = CommandType.Text;
                             //only name of book
-                            if (name.Length > 0 && id_recipes < 0)
+                            if (name.Length > 0)
                             {
                                 cmd.CommandText = "SELECT * FROM BOOK WHERE NAME = @name";
                                 cmd.Parameters.Add(new SqlParameter("@name", name));
                             }
-                            //name and id of recipes list
-                            if (name.Length > 0 && id_recipes >= 0)
-                            {
-                                cmd.CommandText = "SELECT * FROM BOOK WHERE NAME = @name AND ID_RECIPES = @id_recipes";
-                                cmd.Parameters.Add(new SqlParameter("@name", name));
-                                cmd.Parameters.Add(new SqlParameter("@id_recipes", id_recipes));
-                            }
-                            //only id of recipes list
-                            if (name.Length <= 0 && id_recipes >= 0)
-                            {
-                                cmd.CommandText = "SELECT * FROM BOOK WHERE ID_RECIPES = @id_recipes";
-                                cmd.Parameters.Add(new SqlParameter("@id_recipes", id_recipes));
-                            }
                             //all books
-                            if (name.Length <= 0 && id_recipes < 0)
+                            if (name.Length <= 0)
                             {
                                 cmd.CommandText = "SELECT * FROM BOOK";
                             }
                             SqlDataReader rdr = cmd.ExecuteReader();
                             while (rdr.Read())
                             {
-                                books.Add(new Book(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2)));
+                                books.Add(new Book(rdr.GetInt32(0), rdr.GetString(1)));
                             }
                         }
                     }
@@ -71,7 +58,7 @@ namespace KsiazkaKucharskaConsole
             return books;
         }
 
-        public void AddBook(string name, int id_recipes)
+        public void AddBook(string name)
         {
             try
             {
@@ -86,9 +73,8 @@ namespace KsiazkaKucharskaConsole
                         using (SqlCommand cmd = connection.CreateCommand())
                         {
                             cmd.CommandType = CommandType.Text;
-                            cmd.CommandText = "INSERT INTO BOOK VALUES (@id_recipes, @name)";
+                            cmd.CommandText = "INSERT INTO BOOK VALUES (@name)";
                             cmd.Parameters.Add(new SqlParameter("@name", name));
-                            cmd.Parameters.Add(new SqlParameter("@id_recipes", id_recipes));
                             int i = cmd.ExecuteNonQuery();
                             if (i == -1)
                             {
@@ -746,7 +732,7 @@ namespace KsiazkaKucharskaConsole
             }
         }
         
-        public List<RecipesList> GetRecipesLists(int id_recipe = -1, int id_category = -1)
+        public List<RecipesList> GetRecipesLists(int id_recipe = -1, int id_category = -1, int id_book = -1)
         {
             List<RecipesList> recipes = new List<RecipesList>();
             try
@@ -771,7 +757,7 @@ namespace KsiazkaKucharskaConsole
                             while (rdr.Read())
                             {
                                 recipes.Add(
-                                    new RecipesList(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2)));
+                                    new RecipesList(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetInt32(3)));
                             }
                         }
                     }
@@ -791,7 +777,7 @@ namespace KsiazkaKucharskaConsole
             return recipes;
         }
         
-        public void AddRecipesList(int id_recipe, int id_category)
+        public void AddRecipesList(int id_recipe, int id_category, int id_book)
         {
             try
             {
@@ -806,9 +792,10 @@ namespace KsiazkaKucharskaConsole
                         using (SqlCommand cmd = connection.CreateCommand())
                         {
                             cmd.CommandType = CommandType.Text;
-                            cmd.CommandText = "INSERT INTO RECIPES_LIST VALUES (@id_recipe, @id_category)";
+                            cmd.CommandText = "INSERT INTO RECIPES_LIST VALUES (@id_recipe, @id_category, @id_book)";
                             cmd.Parameters.Add(new SqlParameter("@id_recipe", id_recipe));
                             cmd.Parameters.Add(new SqlParameter("@id_category", id_category));
+                            cmd.Parameters.Add(new SqlParameter("@id_book", id_book));
                             int i = cmd.ExecuteNonQuery();
                             if (i == -1)
                             {

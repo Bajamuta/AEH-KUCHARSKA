@@ -49,13 +49,27 @@ namespace KsiazkaKucharskaConsole
             {
                 Console.WriteLine("The ingridients list: " + list.id_ingridients_list + ", id ingridient: " + list.id_ingridient + ", countity: " + list.countity + ", id recipe:" + list.id_recipe);
             }
-            /*dataAccess.AddBook("Test Book", 1);
+            dataAccess.AddStepsList(1,1,1);
+            dataAccess.AddStepsList(2,3,3);
+            List<StepsList> stepsLists = dataAccess.GetStepsLists();
+            foreach (var list in stepsLists) 
+            {
+                Console.WriteLine("The steps list: " + list.id_steps_list + ", id step: " + list.id_step + ", step nr: " + list.step_number + ", id recipe:" + list.id_recipe);
+            }
+            //dataAccess.AddBook("Test Book");
             foreach (var book in dataAccess.GetBooks()) 
             {
-                Console.WriteLine("hello");
-
-                Console.WriteLine("The book '" + book.name + ", id of recipes list: " + book.id_recipes_list);
-            }*/
+                Console.WriteLine("The book: " + book.name);
+            }
+            dataAccess.AddRecipesList(1,1, 3);
+            dataAccess.AddRecipesList(3,2, 3);
+            dataAccess.AddRecipesList(2,2, 3);
+            List<RecipesList> recipesLists = dataAccess.GetRecipesLists();
+            foreach (var list in recipesLists) 
+            {
+                Console.WriteLine("The recipes list: " + list.id_recipes_list + ", id recipe: " + list.id_recipe + ", id category: " + list.id_category);
+            }
+            
         }
     }
 }
