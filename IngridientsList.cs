@@ -2,7 +2,7 @@
 {
     public class IngridientsList
     {
-        public IngridientsList(int id, int id_ingr, int id_rcp, int count)
+        public IngridientsList(int id, int id_ingr, decimal count, int id_rcp)
         {
             id_ingridients_list = id;
             id_ingridient = id_ingr;
@@ -12,7 +12,7 @@
         public int id_ingridients_list { get; set; }
         public int id_ingridient { get; set; }
         public int id_recipe { get; set; }
-        public int countity { get; set; }
+        public decimal countity { get; set; }
 
     }
 }
